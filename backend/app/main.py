@@ -88,6 +88,18 @@ def create_app() -> FastAPI:
     app.add_middleware(RequestLoggingMiddleware)
     app.add_middleware(RequestSizeLimitMiddleware, max_body_bytes=10 * 1024 * 1024)
 
+    # Root welcome route
+    @app.get("/")
+    async def root():
+        return {
+            "name": "FaceVital AI API",
+            "version": settings.app_version,
+            "status": "online",
+            "docs_url": "/docs",
+            "health_url": "/api/v1/health",
+            "disclaimer": "Research Prototype — Not for Clinical Diagnostic Use",
+        }
+
     # Routes
     app.include_router(v1_router)
 
